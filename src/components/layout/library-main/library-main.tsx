@@ -3,6 +3,7 @@ import axios from "axios";
 import { useDebounce } from "../../../hooks/useDebounce";
 
 import BookCardSkeleton from "../../ui/book-card-skeleton/book-card-skeleton";
+import { getPageNumbers } from "../../../lib/functions/pagination";
 import SearchEmpty from "../../ui/search-empty/search-empty";
 import type { GoogleBooksResponse, GoogleBookItem } from "../../../types/google-books";
 import BookCard from "../../ui/book-card/book-card";
@@ -16,7 +17,7 @@ function LibraryMain({ search }: any) {
         const searchTerm = query?.trim() ? query : "search+terms";
         return axios
             .get<GoogleBooksResponse>(
-                `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&startIndex=1&maxResults=9`
+                `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&startIndex=0&maxResults=9`
             )
             .then((response) => response.data.items ?? []);
     };
@@ -47,13 +48,9 @@ function LibraryMain({ search }: any) {
                         </button>
 
                         <ul className={styles["library__pagination-pages"]}>
-                            <li className={styles["library__page"]} aria-current="page">
-                                1
-                            </li>
-                            <li className={styles["library__page"]}>2</li>
-                            <li className={styles["library__page"]}>...</li>
-                            <li className={styles["library__page"]}>9</li>
-                            <li className={styles["library__page"]}>10</li>
+                            {getPageNumbers(1, 50).map((item) => {
+                                return <li className={styles["library__page"]}>{item}</li>;
+                            })}
                         </ul>
 
                         <button className={styles["library__pagination-button"]} aria-label="Next page">
