@@ -7,23 +7,16 @@ import { getPageNumbers } from "../../../lib/functions/pagination";
 import BookCardSkeleton from "../../ui/book-card-skeleton/book-card-skeleton";
 import SearchEmpty from "../../ui/search-empty/search-empty";
 import BookCard from "../../ui/book-card/book-card";
-import type { GoogleBooksResponse, GoogleBookItem } from "../../../types/google-books";
+import type { GoogleBookItem } from "../../../types/google-books";
 import rightArrow from "../../../assets/icons/right.svg";
 import styles from "./library-main.module.scss";
+import { fetchBooks } from "../../../api/fetch-books";
 
 function LibraryMain({ search }: any) {
     const [currentPage, setCurrentPage] = useState(1);
     const debouncedSearch = useDebounce(search, 600);
     const maxResults = 9;
-
-    const fetchBooks = async (query: string, page: number): Promise<GoogleBookItem[]> => {
-        const searchTerm = query?.trim() ? query : "search+terms";
-        const startIndex = (page - 1) * maxResults;
-        const response = await axios.get<GoogleBooksResponse>(
-            `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&startIndex=${startIndex}&maxResults=${maxResults}`
-        );
-        return response.data.items ?? [];
-    };
+    const totalPages = 34;
 
     const {
         data: books,
@@ -31,12 +24,10 @@ function LibraryMain({ search }: any) {
         isFetching,
     } = useQuery<GoogleBookItem[]>({
         queryKey: ["books", debouncedSearch, currentPage],
-        queryFn: () => fetchBooks(debouncedSearch, currentPage),
+        queryFn: () => fetchBooks(debouncedSearch, currentPage, maxResults),
         placeholderData: keepPreviousData,
         staleTime: 1000 * 60 * 2,
     });
-
-    const totalPages = 34;
 
     const handlePageClick = (page: number | string) => {
         if (page === "...") return;
@@ -63,7 +54,6 @@ function LibraryMain({ search }: any) {
                         ? [...Array(9)].map((_, i) => <BookCardSkeleton key={i} />)
                         : books?.map((item: GoogleBookItem) => <BookCard key={item.id} book={item} />)}
                 </section>
-
                 {!isLoading && (
                     <nav className={styles.library__pagination} aria-label="Pagination navigation">
                         <button
@@ -89,7 +79,6 @@ function LibraryMain({ search }: any) {
                                 </li>
                             ))}
                         </ul>
-
                         <button
                             onClick={handleNext}
                             disabled={currentPage === totalPages}
