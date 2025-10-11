@@ -1,32 +1,55 @@
-import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import axios from "axios";
 import { useDebounce } from "../../../hooks/useDebounce";
+import { getPageNumbers } from "../../../lib/functions/pagination";
 
 import BookCardSkeleton from "../../ui/book-card-skeleton/book-card-skeleton";
-import { getPageNumbers } from "../../../lib/functions/pagination";
 import SearchEmpty from "../../ui/search-empty/search-empty";
-import type { GoogleBooksResponse, GoogleBookItem } from "../../../types/google-books";
 import BookCard from "../../ui/book-card/book-card";
+import type { GoogleBooksResponse, GoogleBookItem } from "../../../types/google-books";
 import rightArrow from "../../../assets/icons/right.svg";
 import styles from "./library-main.module.scss";
 
 function LibraryMain({ search }: any) {
+    const [currentPage, setCurrentPage] = useState(1);
     const debouncedSearch = useDebounce(search, 600);
+    const maxResults = 9;
 
-    const fetchBooks = (query: string): Promise<GoogleBookItem[]> => {
+    const fetchBooks = async (query: string, page: number): Promise<GoogleBookItem[]> => {
         const searchTerm = query?.trim() ? query : "search+terms";
-        return axios
-            .get<GoogleBooksResponse>(
-                `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&startIndex=0&maxResults=9`
-            )
-            .then((response) => response.data.items ?? []);
+        const startIndex = (page - 1) * maxResults;
+        const response = await axios.get<GoogleBooksResponse>(
+            `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&startIndex=${startIndex}&maxResults=${maxResults}`
+        );
+        return response.data.items ?? [];
     };
 
-    const { data: books, isLoading } = useQuery<GoogleBookItem[]>({
-        queryKey: ["books", debouncedSearch || "default"],
-        queryFn: () => fetchBooks(debouncedSearch),
+    const {
+        data: books,
+        isLoading,
+        isFetching,
+    } = useQuery<GoogleBookItem[]>({
+        queryKey: ["books", debouncedSearch, currentPage],
+        queryFn: () => fetchBooks(debouncedSearch, currentPage),
+        placeholderData: keepPreviousData,
         staleTime: 1000 * 60 * 2,
     });
+
+    const totalPages = 34;
+
+    const handlePageClick = (page: number | string) => {
+        if (page === "...") return;
+        setCurrentPage(Number(page));
+    };
+
+    const handlePrev = () => {
+        setCurrentPage((prev) => Math.max(prev - 1, 1));
+    };
+
+    const handleNext = () => {
+        setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+    };
 
     if (!isLoading && (!books || books.length === 0)) {
         return <SearchEmpty />;
@@ -36,25 +59,44 @@ function LibraryMain({ search }: any) {
         <main className={styles.library} aria-labelledby="library-title">
             <div className={styles.library__container}>
                 <section className={styles.library__grid} aria-label="Book list section">
-                    {isLoading
-                        ? [...Array(6)].map((_, i) => <BookCardSkeleton key={i} />)
+                    {isLoading || isFetching
+                        ? [...Array(9)].map((_, i) => <BookCardSkeleton key={i} />)
                         : books?.map((item: GoogleBookItem) => <BookCard key={item.id} book={item} />)}
                 </section>
 
                 {!isLoading && (
                     <nav className={styles.library__pagination} aria-label="Pagination navigation">
-                        <button className={styles["library__pagination-button"]} aria-label="Previous page">
-                            <img src={rightArrow} alt="right arrow icon svg" className={styles.left} />
+                        <button
+                            onClick={handlePrev}
+                            disabled={currentPage === 1}
+                            className={styles["library__pagination-button"]}
+                            aria-label="Previous page"
+                        >
+                            <img src={rightArrow} alt="left arrow icon" className={styles.left} />
                         </button>
 
                         <ul className={styles["library__pagination-pages"]}>
-                            {getPageNumbers(1, 50).map((item) => {
-                                return <li className={styles["library__page"]}>{item}</li>;
-                            })}
+                            {getPageNumbers(currentPage, totalPages).map((item, index) => (
+                                <li
+                                    key={index}
+                                    onClick={() => handlePageClick(item)}
+                                    className={`${styles["library__page"]} ${
+                                        item === currentPage ? styles.active : ""
+                                    }`}
+                                    aria-current={item === currentPage ? "page" : undefined}
+                                >
+                                    {item}
+                                </li>
+                            ))}
                         </ul>
 
-                        <button className={styles["library__pagination-button"]} aria-label="Next page">
-                            <img src={rightArrow} alt="right arrow icon svg" />
+                        <button
+                            onClick={handleNext}
+                            disabled={currentPage === totalPages}
+                            className={styles["library__pagination-button"]}
+                            aria-label="Next page"
+                        >
+                            <img src={rightArrow} alt="right arrow icon" />
                         </button>
                     </nav>
                 )}
