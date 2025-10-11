@@ -1,16 +1,15 @@
 import { useState } from "react";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
-import axios from "axios";
 import { useDebounce } from "../../../hooks/useDebounce";
 import { getPageNumbers } from "../../../lib/functions/pagination";
 
+import { fetchBooks } from "../../../api/fetch-books";
 import BookCardSkeleton from "../../ui/book-card-skeleton/book-card-skeleton";
 import SearchEmpty from "../../ui/search-empty/search-empty";
 import BookCard from "../../ui/book-card/book-card";
 import type { GoogleBookItem } from "../../../types/google-books";
 import rightArrow from "../../../assets/icons/right.svg";
 import styles from "./library-main.module.scss";
-import { fetchBooks } from "../../../api/fetch-books";
 
 function LibraryMain({ search }: any) {
     const [currentPage, setCurrentPage] = useState(1);
