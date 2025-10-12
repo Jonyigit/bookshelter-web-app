@@ -25,13 +25,19 @@ const StyledButton = styled.button<{ $variant: "bookmark" | "info" }>`
               `}
 `;
 
-function UniversalButton({ type }: UniversalButtonProps) {
+function UniversalButton({ type, handleClick, setIsModalOpen }: UniversalButtonProps) {
     const isBookmark = type === "bookmark-btn";
+
+    const handleButtonClick = () => {
+        setIsModalOpen((prev: boolean) => !prev);
+        handleClick();
+    };
 
     return (
         <StyledButton
             $variant={isBookmark ? "bookmark" : "info"}
             aria-label={isBookmark ? "Add to bookmarks" : "More info"}
+            onClick={handleButtonClick}
         >
             {isBookmark ? "Bookmark" : "More Info"}
         </StyledButton>

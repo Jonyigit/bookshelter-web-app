@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 
@@ -5,9 +6,13 @@ import ReadButton from "../read-button/read-button";
 import UniversalButton from "../universal-button/universal-button";
 import styles from "./book-card.module.scss";
 
-function BookCard({ book }: any) {
-    const { imageLinks, publishedDate, title, authors } = book?.volumeInfo;
+function BookCard({ book, setBookData, setIsModalOpen }: any) {
+    const { imageLinks, publishedDate, title, authors, previewLink } = book?.volumeInfo;
     const imageSrc = imageLinks?.thumbnail || "https://via.placeholder.com/128x192?text=No+Image";
+
+    const handleClick = () => {
+        setBookData(book?.volumeInfo);
+    };
 
     return (
         <article className={styles["book-card"]} itemScope itemType="https://schema.org/Book">
@@ -29,10 +34,12 @@ function BookCard({ book }: any) {
 
             <footer className={styles.btns}>
                 <div className={styles.row}>
-                    <UniversalButton type="bookmark-btn" />
-                    <UniversalButton type="info-btn" />
+                    <UniversalButton type="bookmark-btn" handleClick={handleClick} setIsModalOpen={setIsModalOpen} />
+                    <UniversalButton type="info-btn" handleClick={handleClick} setIsModalOpen={setIsModalOpen} />
                 </div>
-                <ReadButton />
+                <Link to={previewLink} target="_blank">
+                    <ReadButton />
+                </Link>
             </footer>
         </article>
     );

@@ -11,7 +11,7 @@ import type { GoogleBookItem } from "../../../types/google-books";
 import rightArrow from "../../../assets/icons/right.svg";
 import styles from "./library-main.module.scss";
 
-function LibraryMain({ search }: any) {
+function LibraryMain({ search, setBookData, setIsModalOpen }: any) {
     const [currentPage, setCurrentPage] = useState(1);
     const debouncedSearch = useDebounce(search, 600);
     const maxResults = 9;
@@ -51,7 +51,7 @@ function LibraryMain({ search }: any) {
                 <section className={styles.library__grid} aria-label="Book list section">
                     {isLoading || isFetching
                         ? [...Array(9)].map((_, i) => <BookCardSkeleton key={i} />)
-                        : books?.map((item: GoogleBookItem) => <BookCard key={item.id} book={item} />)}
+                        : books?.map((item: GoogleBookItem) => <BookCard key={item.id} book={item} setBookData={setBookData} setIsModalOpen={setIsModalOpen} />)}
                 </section>
                 {!isLoading && (
                     <nav className={styles.library__pagination} aria-label="Pagination navigation">

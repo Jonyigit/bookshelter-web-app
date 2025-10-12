@@ -5,6 +5,7 @@
 *::after {
     transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, fill 0.4s ease, stroke 0.4s ease;
 }
+
 * {
     margin: 0;
     padding: 0;
@@ -14,6 +15,15 @@
 body {
     font-family: "Rubik", sans-serif;
     background: var(--bg);
+    &::-webkit-scrollbar {
+        width: 14px;
+        background: var(--bg);
+    }
+    &::-webkit-scrollbar-thumb {
+        border-radius: 8px;
+        border: 4px solid var(--bg);
+        background: var(--grey);
+    }
 }
 
 #root {
