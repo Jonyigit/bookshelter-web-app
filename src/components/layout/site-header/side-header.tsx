@@ -6,6 +6,7 @@ import { LuCalendar } from "react-icons/lu";
 
 import siteLogo from "../../../assets/icons/home-page-bookshelter-logo.svg";
 import styles from "./side-header.module.scss";
+import clsx from "clsx";
 
 function Header({ setSearch, search }: any) {
     const getInitialTheme = (): "light" | "dark" => {
@@ -96,7 +97,7 @@ function Header({ setSearch, search }: any) {
 
                         <button
                             type="button"
-                            className={styles.header__logoutBtn}
+                            className={clsx(styles.header__logoutBtn, isLoggingOut && styles.loading)}
                             aria-label="Log out of your account"
                             onClick={logout}
                             disabled={isLoggingOut}
