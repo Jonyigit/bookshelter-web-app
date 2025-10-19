@@ -45,6 +45,11 @@
             font-weight: 500;
             font-size: 24px;
             color: var(--text-secondary-color);
+            cursor: default;
+        }
+        .custom-tooltip {
+            background-color: var(--grey);
+            color: var(--secondary-bg);
         }
         .book-details-drawer__close-btn {
             border: none;
@@ -101,20 +106,20 @@
                 .book-details-drawer__info-item {
                     display: flex;
                     justify-content: start;
-                    align-items: start;
                     width: 100%;
                     gap: 10px;
-                    &__info-label {
+                    .book-details-drawer__info-label {
                         font-weight: 400;
                         font-size: 14px;
                         color: var(--text-secondary-color);
-                        padding: 5px 0px;
+                        padding: 5px 0px 0px 0px;
                     }
                 }
                 .book-details-drawer__sublist {
                     display: flex;
-                    justify-content: center;
+                    justify-content: start;
                     align-items: center;
+                    flex-wrap: wrap;
                     gap: 4px;
                     .book-details-drawer__subitem {
                         padding: 5px 15px;

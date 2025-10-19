@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { IoCloseOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import { Tooltip } from "react-tooltip";
 import clsx from "clsx";
 
+import BookDetailsDrawerSkeleton from "../../ui/book-details-drawer-skeleton/book-details-drawer-skeleton";
 import ReadButton from "../../ui/read-button/read-button";
 import type { BookDetailsDrawerProps } from "../../../types/book-details-drawer";
 import styles from "./book-details-drawer.module.scss";
@@ -10,7 +12,7 @@ import styles from "./book-details-drawer.module.scss";
 function BookDetailsDrawer({ bookData, isModalOpen, setIsModalOpen }: BookDetailsDrawerProps) {
     const [isClosing, setIsClosing] = useState(false);
 
-    if (!bookData) return null;
+    if (!bookData) return <BookDetailsDrawerSkeleton />;
 
     const { title, description, imageLinks, pageCount, authors, previewLink, publisher, publishedDate, categories } =
         bookData;
@@ -39,9 +41,14 @@ function BookDetailsDrawer({ bookData, isModalOpen, setIsModalOpen }: BookDetail
                 onClick={(e) => e.stopPropagation()}
             >
                 <header className={styles["book-details-drawer__header"]}>
-                    <h1 className={styles["book-details-drawer__title"]}>
+                    <h1
+                        className={styles["book-details-drawer__title"]}
+                        data-tooltip-id="drawer-title"
+                        data-tooltip-content={title}
+                    >
                         {title?.length > 20 ? `${title.slice(0, 20)}...` : title}
                     </h1>
+                    <Tooltip id="drawer-title" place="top" className={styles["custom-tooltip"]} />
                     <button
                         className={styles["book-details-drawer__close-btn"]}
                         aria-label="Close book details"
