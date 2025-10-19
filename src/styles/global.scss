@@ -16,12 +16,10 @@ body {
     font-family: "Rubik", sans-serif;
     background: var(--bg);
     &::-webkit-scrollbar {
-        width: 14px;
-        background: var(--bg);
+        width: 4px;
     }
     &::-webkit-scrollbar-thumb {
-        border-radius: 8px;
-        border: 4px solid var(--bg);
+        border-radius: 4px;
         background: var(--grey);
     }
 }
