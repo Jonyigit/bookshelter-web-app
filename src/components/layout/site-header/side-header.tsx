@@ -117,7 +117,7 @@ function Header({ setSearch, search }: any) {
 
                 <div className={styles.header__bottom}>
                     <h3 className={styles.header__results} aria-live="polite">
-                        Showing 18 result(s)
+                        Showing 9 result(s)
                     </h3>
                     <button type="button" className={styles.header__sortBtn} aria-label="Sort books by newest">
                         <LuCalendar aria-hidden="true" size={25} /> <span>Order by newest</span>
