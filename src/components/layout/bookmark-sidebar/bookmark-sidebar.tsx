@@ -1,3 +1,4 @@
+import BookmarkCard from "../../ui/bookmark-card/bookmark-card";
 import styles from "./bookmark-sidebar.module.scss";
 
 function BookmarkSidebar() {
@@ -11,7 +12,11 @@ function BookmarkSidebar() {
                     </h5>
                 </header>
 
-                <section className={styles.sidebar__content} aria-label="Saved bookmarked books"></section>
+                <section className={styles.sidebar__content} aria-label="Saved bookmarked books">
+                    <BookmarkCard />
+                    <BookmarkCard />
+                    <BookmarkCard />
+                </section>
             </div>
         </aside>
     );
