@@ -5,6 +5,7 @@ import BookmarkSidebar from "../../components/layout/bookmark-sidebar/bookmark-s
 import LibraryMain from "../../components/layout/library-main/library-main";
 import Header from "../../components/layout/site-header/side-header";
 import styles from "./home-page.module.scss";
+import Counter from "../../components/ui/counter/counter";
 
 function Home() {
     const [bookData, setBookData] = useState(null);
@@ -26,6 +27,7 @@ function Home() {
                 <LibraryMain search={search} setBookData={setBookData} setIsModalOpen={setIsModalOpen} />
             </main>
             <BookDetailsDrawer bookData={bookData} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+            <Counter />
         </>
     );
 }

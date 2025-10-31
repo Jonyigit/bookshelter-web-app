@@ -40,6 +40,7 @@ function BookCard({ book, setBookData, setIsModalOpen }: any) {
                 <Link to={previewLink} target="_blank">
                     <ReadButton />
                 </Link>
+                
             </footer>
         </article>
     );

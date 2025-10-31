@@ -11,7 +11,7 @@ export type ReactQueryProviderProps = {
 
 export interface UniversalButtonProps {
     type: string;
-    handleClick: () => void;
+    handleClick: () => void | [];
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 

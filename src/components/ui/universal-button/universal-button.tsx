@@ -29,8 +29,10 @@ function UniversalButton({ type, handleClick, setIsModalOpen }: UniversalButtonP
     const isBookmark = type === "bookmark-btn";
 
     const handleButtonClick = () => {
-        setIsModalOpen((prev: boolean) => !prev);
-        handleClick();
+        if (!isBookmark) {
+            setIsModalOpen((prev: boolean) => !prev);
+            handleClick();
+        }
     };
 
     return (
