@@ -25,13 +25,15 @@ const StyledButton = styled.button<{ $variant: "bookmark" | "info" }>`
               `}
 `;
 
-function UniversalButton({ type, handleClick, setIsModalOpen }: UniversalButtonProps) {
+function UniversalButton({ type, handleClick, setIsModalOpen, handleAddBookMark }: UniversalButtonProps) {
     const isBookmark = type === "bookmark-btn";
 
     const handleButtonClick = () => {
         if (!isBookmark) {
             setIsModalOpen((prev: boolean) => !prev);
             handleClick();
+        } else {
+            handleAddBookMark();
         }
     };
 

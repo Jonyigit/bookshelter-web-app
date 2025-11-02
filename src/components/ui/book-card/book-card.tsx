@@ -6,12 +6,25 @@ import ReadButton from "../read-button/read-button";
 import UniversalButton from "../universal-button/universal-button";
 import styles from "./book-card.module.scss";
 
-function BookCard({ book, setBookData, setIsModalOpen }: any) {
+function BookCard({ book, setBookData, setIsModalOpen, setBookMarkData }: any) {
     const { imageLinks, publishedDate, title, authors, previewLink } = book?.volumeInfo;
     const imageSrc = imageLinks?.thumbnail || "https://via.placeholder.com/128x192?text=No+Image";
 
     const handleClick = () => {
-        setBookData(book?.volumeInfo);
+        const newData = book?.volumeInfo;
+        if (!newData) return;
+
+        setBookData(newData);
+    };
+
+    const handleAddBookMark = () => {
+        const newData = book?.volumeInfo;
+        if (!newData) return;
+
+        setBookMarkData((prev: any) => {
+            const prevArray = Array.isArray(prev) ? prev : [];
+            return [newData, ...prevArray];
+        });
     };
 
     return (
@@ -34,13 +47,12 @@ function BookCard({ book, setBookData, setIsModalOpen }: any) {
 
             <footer className={styles.btns}>
                 <div className={styles.row}>
-                    <UniversalButton type="bookmark-btn" handleClick={handleClick} setIsModalOpen={setIsModalOpen} />
-                    <UniversalButton type="info-btn" handleClick={handleClick} setIsModalOpen={setIsModalOpen} />
+                    <UniversalButton type="bookmark-btn" handleClick={handleClick} handleAddBookMark={handleAddBookMark} setIsModalOpen={setIsModalOpen} />
+                    <UniversalButton type="info-btn" handleClick={handleClick} handleAddBookMark={handleAddBookMark} setIsModalOpen={setIsModalOpen} />
                 </div>
                 <Link to={previewLink} target="_blank">
                     <ReadButton />
                 </Link>
-                
             </footer>
         </article>
     );

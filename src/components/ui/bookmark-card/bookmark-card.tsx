@@ -32,12 +32,16 @@ const Button = styled.button`
     font-size: 20px;
 `;
 
-function BookmarkCard() {
+function BookmarkCard({ item }: any) {
+    console.log(item);
+
     return (
         <Wrapper>
             <Content>
-                <h4 style={{ fontSize: "16px", fontWeight: "400", color: "var(--text-color)" }}>Python</h4>
-                <span style={{ fontSize: "13px", fontWeight: "500", color: "var(--color)" }}>David M. Beazley</span>
+                <h4 style={{ fontSize: "16px", fontWeight: "400", color: "var(--text-color)" }}>{item.title}</h4>
+                <span style={{ fontSize: "13px", fontWeight: "500", color: "var(--color)" }}>
+                    {item.authors.join(",")}
+                </span>
             </Content>
             <Controls>
                 <Button>

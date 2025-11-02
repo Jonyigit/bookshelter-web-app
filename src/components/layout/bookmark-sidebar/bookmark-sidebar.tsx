@@ -1,7 +1,7 @@
 import BookmarkCard from "../../ui/bookmark-card/bookmark-card";
 import styles from "./bookmark-sidebar.module.scss";
 
-function BookmarkSidebar() {
+function BookmarkSidebar({ bookMarkData }: any) {
     return (
         <aside className={styles.sidebar} aria-label="User bookmarks">
             <div className={styles.sidebar__container}>
@@ -13,9 +13,9 @@ function BookmarkSidebar() {
                 </header>
 
                 <section className={styles.sidebar__content} aria-label="Saved bookmarked books">
-                    <BookmarkCard />
-                    <BookmarkCard />
-                    <BookmarkCard />
+                    {bookMarkData.map((item: any) => {
+                        return <BookmarkCard item={item} />;
+                    })}
                 </section>
             </div>
         </aside>
