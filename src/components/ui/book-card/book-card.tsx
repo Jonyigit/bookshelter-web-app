@@ -47,8 +47,18 @@ function BookCard({ book, setBookData, setIsModalOpen, setBookMarkData }: any) {
 
             <footer className={styles.btns}>
                 <div className={styles.row}>
-                    <UniversalButton type="bookmark-btn" handleClick={handleClick} handleAddBookMark={handleAddBookMark} setIsModalOpen={setIsModalOpen} />
-                    <UniversalButton type="info-btn" handleClick={handleClick} handleAddBookMark={handleAddBookMark} setIsModalOpen={setIsModalOpen} />
+                    <UniversalButton
+                        type="bookmark-btn"
+                        handleClick={handleClick}
+                        handleAddBookMark={handleAddBookMark}
+                        setIsModalOpen={setIsModalOpen}
+                    />
+                    <UniversalButton
+                        type="info-btn"
+                        handleClick={handleClick}
+                        handleAddBookMark={handleAddBookMark}
+                        setIsModalOpen={setIsModalOpen}
+                    />
                 </div>
                 <Link to={previewLink} target="_blank">
                     <ReadButton />
