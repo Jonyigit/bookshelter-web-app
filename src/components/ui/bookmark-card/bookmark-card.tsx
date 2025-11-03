@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { removeBookmark } from "../../../redux/actions/bookmark-actions";
+import toast from "react-hot-toast";
 
 const Wrapper = styled.div`
     background: var(--bg);
@@ -66,7 +67,10 @@ function BookmarkCard({ item }: any) {
     const dispatch = useDispatch();
 
     const handleDelete = () => {
+        const id = toast.loading("Removing...");
         dispatch(removeBookmark(item.previewLink));
+        toast.dismiss(id);
+        toast.success("Removed!");
     };
 
     return (

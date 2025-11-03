@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import { useDispatch } from "react-redux";
+import toast from "react-hot-toast";
 
 import ReadButton from "../read-button/read-button";
 import UniversalButton from "../universal-button/universal-button";
@@ -25,6 +26,7 @@ function BookCard({ book, setBookData, setIsModalOpen }: any) {
         const newData = book?.volumeInfo;
         if (!newData) return;
         dispatch(addBookmark(newData));
+        toast.success("Book added to bookmarks!");
     };
 
     return (
