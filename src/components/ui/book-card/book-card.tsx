@@ -1,14 +1,18 @@
 import { Link } from "react-router-dom";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
+import { useDispatch } from "react-redux";
 
 import ReadButton from "../read-button/read-button";
 import UniversalButton from "../universal-button/universal-button";
+import { addBookmark } from "../../../redux/actions/bookmark-actions";
 import styles from "./book-card.module.scss";
 
-function BookCard({ book, setBookData, setIsModalOpen, setBookMarkData }: any) {
+function BookCard({ book, setBookData, setIsModalOpen }: any) {
     const { imageLinks, publishedDate, title, authors, previewLink } = book?.volumeInfo;
     const imageSrc = imageLinks?.thumbnail || "https://via.placeholder.com/128x192?text=No+Image";
+
+    const dispatch = useDispatch();
 
     const handleClick = () => {
         const newData = book?.volumeInfo;
@@ -20,11 +24,7 @@ function BookCard({ book, setBookData, setIsModalOpen, setBookMarkData }: any) {
     const handleAddBookMark = () => {
         const newData = book?.volumeInfo;
         if (!newData) return;
-
-        setBookMarkData((prev: any) => {
-            const prevArray = Array.isArray(prev) ? prev : [];
-            return [newData, ...prevArray];
-        });
+        dispatch(addBookmark(newData));
     };
 
     return (

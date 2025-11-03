@@ -14,7 +14,7 @@ function BookmarkSidebar({ bookMarkData }: any) {
 
                 <section className={styles.sidebar__content} aria-label="Saved bookmarked books">
                     {bookMarkData.map((item: any) => {
-                        return <BookmarkCard item={item} />;
+                        return <BookmarkCard item={item} key={item.previewLink} />;
                     })}
                 </section>
             </div>

@@ -1,8 +1,10 @@
 import { legacy_createStore as createStore, combineReducers } from "redux";
-import { counterReducer } from "./reducers/counter-reducer";
+import { bookmarkReducer } from "./reducers/bookmark-reducer";
 
 const rootReducer = combineReducers({
-    counter: counterReducer,
+    bookmarks: bookmarkReducer,
 });
+
+export type RootState = ReturnType<typeof rootReducer>;
 
 export const store = createStore(rootReducer);

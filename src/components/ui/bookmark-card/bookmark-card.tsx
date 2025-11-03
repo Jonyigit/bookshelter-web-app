@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { FiDelete, FiBookOpen } from "react-icons/fi";
-import { Tooltip } from "react-tooltip";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+
+import { removeBookmark } from "../../../redux/actions/bookmark-actions";
 
 const Wrapper = styled.div`
     background: var(--bg);
@@ -60,6 +63,12 @@ const Desc = styled.span`
 `;
 
 function BookmarkCard({ item }: any) {
+    const dispatch = useDispatch();
+
+    const handleDelete = () => {
+        dispatch(removeBookmark(item.previewLink));
+    };
+
     return (
         <Wrapper>
             <Content>
@@ -67,10 +76,12 @@ function BookmarkCard({ item }: any) {
                 <Desc>{item.authors.join(",")}</Desc>
             </Content>
             <Controls>
-                <Button>
-                    <FiBookOpen color="var(--grey)" />
-                </Button>
-                <Button>
+                <Link to={item.previewLink} target="_blank">
+                    <Button>
+                        <FiBookOpen color="var(--grey)" />
+                    </Button>
+                </Link>
+                <Button onClick={handleDelete}>
                     <FiDelete color="#FF6231" />
                 </Button>
             </Controls>
